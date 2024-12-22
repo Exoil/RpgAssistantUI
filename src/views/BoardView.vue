@@ -30,7 +30,7 @@ const updateNodePosition = (id: number, x: number, y: number) => {
         :y1="nodes[0].y" 
         :x2="nodes[1].x" 
         :y2="nodes[1].y"
-        stroke="black"
+        stroke="white"
         stroke-width="2"
       />
       <NodeCircle 
