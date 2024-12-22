@@ -11,15 +11,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps } from 'vue'
+import { ref, defineProps, defineEmits } from 'vue'
 
 const props = defineProps<{
+  id: number
   cx: number
   cy: number
   r: number
   fill: string
   stroke?: string
   strokeWidth?: number
+}>()
+
+const emit = defineEmits<{
+  'position-update': [id: number, x: number, y: number]
 }>()
 
 const currentCx = ref(props.cx)
@@ -36,6 +41,7 @@ const startDrag = (event: MouseEvent) => {
     const dy = moveEvent.clientY - startY
     currentCx.value = lastX + dx
     currentCy.value = lastY + dy
+    emit('position-update', props.id, currentCx.value, currentCy.value)
   }
 
   const onMouseUp = () => {
