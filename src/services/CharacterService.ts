@@ -1,7 +1,7 @@
 import type { Character, CharacterDetails } from '../types/character'
 
 export class CharacterService {
-  private baseUrl: string = 'http://localhost:8080'
+  private baseUrl: string = 'http://localhost:8080/characters'
   private contentTypeValue: string = 'application/json'
   private contentTypeKey: string = 'Content-Type'
 
