@@ -4,7 +4,7 @@ import type { CharacterDetails } from '../types/character'
 import { ref, onMounted } from 'vue'
 const characters = ref<CharacterDetails[]>([])
 const characterService = new CharacterService()
-
+const showCreateCharacterModal = ref(false)
 const loadCharacters = async () => {
   try {
     characters.value = await characterService.getCharacters()
@@ -13,19 +13,9 @@ const loadCharacters = async () => {
   }
 }
 
-const createCharacter = async () => {
-  try {
-    await characterService.createCharacter({
-      name: `Character ${characters.value.length + 1}`,
-      description: 'New character'
-    })
-    await loadCharacters()
-  } catch (error) {
-    console.error('Failed to create character:', error)
-  }
+const createCharacter = () => {
+  showCreateCharacterModal.value = true
 }
-
-const showModal = ref(false)
 
 onMounted(loadCharacters)
 </script>
@@ -42,7 +32,7 @@ onMounted(loadCharacters)
     </div>
     <main class="board">
 
-      <CreateCharacterModal :showModal="showModal" @close="showModal = false" />
+      <CreateCharacterModal :showModal="showCreateCharacterModal" @close="showCreateCharacterModal = false" />
     </main>
   </div>
 </template>
