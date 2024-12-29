@@ -3,14 +3,14 @@ import { CharacterService } from '@/services/CharacterService'
 import { ref } from 'vue'
 import { defineProps, defineEmits } from 'vue'
 
-const emit = defineEmits(['close'])
-
-const name = ref('')
-const description = ref('')
 const props = defineProps<{
   charactersService: CharacterService
   showModal: boolean
 }>()
+
+const emit = defineEmits(['close'])
+const name = ref('')
+const description = ref('')
 
 const createCharacter = async () => {
     try {
@@ -21,14 +21,14 @@ const createCharacter = async () => {
   } catch (error) {
     console.error('Failed to create character:', error)
   }
-  finally{
+  finally {
     emit('close')
   }
 }
 </script>
 
 <template>
-    <div class="modal">
+    <div class="modal" v-if="showModal">
       <div class="modal-content">
         <h2>Create New Character</h2>
         <input v-model="name" placeholder="Name" />

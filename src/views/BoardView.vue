@@ -1,20 +1,25 @@
 <script setup lang="ts">
 import { CharacterService } from '../services/CharacterService'
 import type { CharacterDetails } from '../types/character'
+import CreateCharacterModal from '../components/characters/CreateCharacterModal.vue'
 import { ref, onMounted } from 'vue'
 const characters = ref<CharacterDetails[]>([])
 const characterService = new CharacterService()
-const showCreateCharacterModal = ref(false)
-const loadCharacters = async () => {
+const isShowCreateCharacterModal = ref(false)
+
+const loadCharacters = async () => getCharacters()
+
+const showCreateCharacterModal = async () => {
+  isShowCreateCharacterModal.value = true
+  await getCharacters()
+}
+
+async function getCharacters() {
   try {
     characters.value = await characterService.getCharacters()
   } catch (error) {
     console.error('Failed to load characters:', error)
   }
-}
-
-const createCharacter = () => {
-  showCreateCharacterModal.value = true
 }
 
 onMounted(loadCharacters)
@@ -23,7 +28,7 @@ onMounted(loadCharacters)
 <template>
   <div class="board-container">
     <div class="side-panel">
-      <button class="create-btn" @click="createCharacter">Create Character</button>
+      <button class="create-btn" @click="showCreateCharacterModal">Create Character</button>
       <div class="character-list">
         <div v-for="character in characters" :key="character.id" class="character-item">
           {{ character.name }}
@@ -32,7 +37,11 @@ onMounted(loadCharacters)
     </div>
     <main class="board">
 
-      <CreateCharacterModal :showModal="showCreateCharacterModal" @close="showCreateCharacterModal = false" />
+
+      <CreateCharacterModal 
+        :showModal="isShowCreateCharacterModal" 
+        :charactersService="characterService" 
+        @close="isShowCreateCharacterModal = false" />
     </main>
   </div>
 </template>
