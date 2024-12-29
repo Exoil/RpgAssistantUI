@@ -1,6 +1,6 @@
 # RpgAssistantUI
 
-This template should help get you started developing with Vue 3 in Vite.
+Vue js project for leaning framework purpose and create ui for RpgAssistant API
 
 ## Recommended IDE Setup
 
