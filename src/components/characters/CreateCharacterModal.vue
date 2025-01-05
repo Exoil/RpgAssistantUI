@@ -2,10 +2,12 @@
 import { CharacterService } from '@/services/CharacterService'
 import { ref } from 'vue'
 import { defineProps, defineEmits } from 'vue'
+import type { CharacterDetails } from '@/types/character'
 
 const props = defineProps<{
   charactersService: CharacterService
   showModal: boolean
+  characters: CharacterDetails[]
 }>()
 
 const emit = defineEmits(['close'])
@@ -14,7 +16,12 @@ const description = ref('')
 
 const createCharacter = async () => {
     try {
-    await props.charactersService.createCharacter({
+    let id = await props.charactersService.createCharacter({
+      name: name.value,
+      description: description.value
+    })
+    props.characters.push({
+      id: id,
       name: name.value,
       description: description.value
     })

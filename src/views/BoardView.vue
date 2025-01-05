@@ -11,7 +11,6 @@ const loadCharacters = async () => getCharacters()
 
 const showCreateCharacterModal = async () => {
   isShowCreateCharacterModal.value = true
-  await getCharacters()
 }
 
 async function getCharacters() {
@@ -37,10 +36,10 @@ onMounted(loadCharacters)
     </div>
     <main class="board">
 
-
       <CreateCharacterModal 
         :showModal="isShowCreateCharacterModal" 
         :charactersService="characterService" 
+        :characters="characters"
         @close="isShowCreateCharacterModal = false" />
     </main>
   </div>
