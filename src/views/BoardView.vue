@@ -1,24 +1,36 @@
 <script setup lang="ts">
 import { CharacterService } from '../services/CharacterService'
-import type { CharacterDetails } from '../types/character'
+import type { CharacterDetails, CharacterDetailsViewModel } from '../types/character'
 import CreateCharacterModal from '../components/characters/CreateCharacterModal.vue'
 import { ref, onMounted } from 'vue'
-const characters = ref<CharacterDetails[]>([])
+const characters = ref<CharacterDetailsViewModel[]>([])
 const characterService = new CharacterService()
 const isShowCreateCharacterModal = ref(false)
 
-const loadCharacters = async () => getCharacters()
+const loadCharacters = async () => {
+  
+  var characterDetails = await getCharacters();
+  characterDetails.forEach((element: CharacterDetails) => {
+    characters.value.push({
+      id: element.id,
+      name: element.name,
+      description: element.description,
+      isModalOpen: false
+    })
+  });
+} 
 
 const showCreateCharacterModal = async () => {
   isShowCreateCharacterModal.value = true
 }
 
-async function getCharacters() {
+async function getCharacters(): Promise<CharacterDetails[]>{
   try {
-    characters.value = await characterService.getCharacters()
+    return await characterService.getCharacters()
   } catch (error) {
     console.error('Failed to load characters:', error)
   }
+  return [];
 }
 
 onMounted(loadCharacters)

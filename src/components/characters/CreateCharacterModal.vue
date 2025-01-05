@@ -2,12 +2,12 @@
 import { CharacterService } from '@/services/CharacterService'
 import { ref } from 'vue'
 import { defineProps, defineEmits } from 'vue'
-import type { CharacterDetails } from '@/types/character'
+import type { CharacterDetailsViewModel } from '@/types/character'
 
 const props = defineProps<{
   charactersService: CharacterService
   showModal: boolean
-  characters: CharacterDetails[]
+  characters: CharacterDetailsViewModel[]
 }>()
 
 const emit = defineEmits(['close'])
@@ -23,7 +23,9 @@ const createCharacter = async () => {
     props.characters.push({
       id: id,
       name: name.value,
-      description: description.value
+      description: description.value,
+      knows: [],
+      isModalOpen: false
     })
   } catch (error) {
     console.error('Failed to create character:', error)

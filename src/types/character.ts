@@ -10,6 +10,14 @@ export interface CharacterDetails extends Character {
   knows?: CharacterDetails[]
 }
 
+export interface CharacterDetailsViewModel extends CharacterDetails {
+  id: string
+  name: string
+  description: string
+  knows?: CharacterDetails[]
+  isModalOpen: boolean
+}
+
 export interface ProblemDetails {
   type: string
   title: string
