@@ -2,15 +2,13 @@
 import { CharacterService } from '@/services/CharacterService'
 import { ref } from 'vue'
 import { defineProps, defineEmits } from 'vue'
-import type { CharacterDetailsViewModel } from '@/types/character'
 
 const props = defineProps<{
   charactersService: CharacterService
   showModal: boolean
-  characters: CharacterDetailsViewModel[]
 }>()
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'addToList'])
 const name = ref('')
 const description = ref('')
 
@@ -20,7 +18,7 @@ const createCharacter = async () => {
       name: name.value,
       description: description.value
     })
-    props.characters.push({
+    emit('addToList', {
       id: id,
       name: name.value,
       description: description.value,

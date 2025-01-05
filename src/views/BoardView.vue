@@ -1,36 +1,36 @@
 <script setup lang="ts">
 import { CharacterService } from '../services/CharacterService'
-import type { CharacterDetails, CharacterDetailsViewModel } from '../types/character'
+import type { Character, CharacterDetailsViewModel } from '../types/character'
 import CreateCharacterModal from '../components/characters/CreateCharacterModal.vue'
+import UpdateCharacterModal from '../components/characters/UpdateCharacterModal.vue'
+import CharacterHeader from '../components/characters/CharacterHeader.vue'
 import { ref, onMounted } from 'vue'
 const characters = ref<CharacterDetailsViewModel[]>([])
 const characterService = new CharacterService()
 const isShowCreateCharacterModal = ref(false)
 
 const loadCharacters = async () => {
-  
-  var characterDetails = await getCharacters();
-  characterDetails.forEach((element: CharacterDetails) => {
-    characters.value.push({
-      id: element.id,
-      name: element.name,
-      description: element.description,
+  try {
+    const characterDetails = await characterService.getCharacters()
+    characters.value = characterDetails.map(character => ({
+      ...character,
       isModalOpen: false
-    })
-  });
-} 
+    }))
+  } catch (error) {
+    console.error('Failed to load characters:', error)
+  }
+}
 
 const showCreateCharacterModal = async () => {
   isShowCreateCharacterModal.value = true
 }
 
-async function getCharacters(): Promise<CharacterDetails[]>{
-  try {
-    return await characterService.getCharacters()
-  } catch (error) {
-    console.error('Failed to load characters:', error)
-  }
-  return [];
+const addCharacterToList = (character: CharacterDetailsViewModel) => {
+  characters.value.push(character)
+}
+
+const removeCharacterFromList = (id: string) => {
+  characters.value = characters.value.filter(character => character.id !== id)
 }
 
 onMounted(loadCharacters)
@@ -41,18 +41,29 @@ onMounted(loadCharacters)
     <div class="side-panel">
       <button class="create-btn" @click="showCreateCharacterModal">Create Character</button>
       <div class="character-list">
-        <div v-for="character in characters" :key="character.id" class="character-item">
-          {{ character.name }}
-        </div>
+        <CharacterHeader 
+          v-for="character in characters" 
+          :key="character.id" 
+          :character="character" 
+        />
+        <UpdateCharacterModal 
+          v-for="character in characters" 
+          :key="character.id"
+          :character="character" 
+          :charactersService="characterService" 
+          :characters="characters"
+          @delete="removeCharacterFromList"
+        />
       </div>
     </div>
     <main class="board">
-
       <CreateCharacterModal 
         :showModal="isShowCreateCharacterModal" 
         :charactersService="characterService" 
         :characters="characters"
-        @close="isShowCreateCharacterModal = false" />
+        @close="isShowCreateCharacterModal = false"
+        @addToList="addCharacterToList"
+      />
     </main>
   </div>
 </template>
