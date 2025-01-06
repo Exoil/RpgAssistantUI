@@ -14,6 +14,7 @@ export interface CharacterDetailsViewModel extends CharacterDetails {
   name: string
   description: string
   isModalOpen: boolean
+  isNodeView: boolean
 }
 
 export interface ProblemDetails {

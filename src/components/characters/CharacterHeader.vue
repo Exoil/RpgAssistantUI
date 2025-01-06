@@ -16,6 +16,12 @@ const handleClick = () => {
 }
 const handleDoubleClick = () => {
   console.log('Double click detected')
+  if(!props.character.isNodeView){
+    props.character.isNodeView = true;
+    return;
+  }
+
+  props.character.isNodeView = false;
 }
 </script>
 

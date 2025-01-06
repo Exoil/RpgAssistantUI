@@ -1,5 +1,7 @@
 <template>
   <circle
+    v-if="props.characterNode.isNodeView"
+    :id="props.characterNode.character.id"
     :cx="props.characterNode.position.x"
     :cy="props.characterNode.position.y"
     :r="75"
@@ -11,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import type { CharacterNode } from '@/types/characterNode';
+import type { CharacterNode } from '@/types/CharacterDetailsViewModel';
 import { ref, defineEmits } from 'vue'
 
 const props = defineProps<{
@@ -21,7 +23,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   'position-update': [id: string, x: number, y: number]
 }>()
-
 
 let lastX = props.characterNode.position.x
 let lastY = props.characterNode.position.y
@@ -33,19 +34,19 @@ const startDrag = (event: MouseEvent) => {
   const onMouseMove = (moveEvent: MouseEvent) => {
     const dx = moveEvent.clientX - startX
     const dy = moveEvent.clientY - startY
-    props.characterNode.position.value = lastX + dx
-    props.characterNode.position.value = lastY + dy
+    props.characterNode.position.x = lastX + dx
+    props.characterNode.position.y = lastY + dy
     emit(
       'position-update',
-      props.characterNode.id.value,
-      props.characterNode.position.x.value,
-      props.characterNode.position.y.value
+      props.characterNode.character.id,
+      props.characterNode.position.x,
+      props.characterNode.position.y
     )
   }
 
   const onMouseUp = () => {
-    lastX = props.characterNode.position.x.value
-    lastY = props.characterNode.position.y.value
+    lastX = props.characterNode.position.x
+    lastY = props.characterNode.position.y
     window.removeEventListener('mousemove', onMouseMove)
     window.removeEventListener('mouseup', onMouseUp)
   }
@@ -57,4 +58,3 @@ const startDrag = (event: MouseEvent) => {
 
 <style scoped>
 </style>
-@/types/characterNode

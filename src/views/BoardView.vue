@@ -16,7 +16,8 @@ const loadCharacters = async () => {
     const characterDetails = await characterService.getCharacters()
     characters.value = characterDetails.map(character => ({
       ...character,
-      isModalOpen: false
+      isModalOpen: false,
+      isNodeView: false
     }))
   } catch (error) {
     console.error('Failed to load characters:', error)
@@ -33,6 +34,14 @@ const addCharacterToList = (character: CharacterDetailsViewModel) => {
 
 const removeCharacterFromList = (id: string) => {
   characters.value = characters.value.filter(character => character.id !== id)
+}
+
+const addCharacterToNodes = (character: CharacterNode) => {
+  characterNodes.value.push(character)
+}
+
+const removeCharacteFromoNodes = (id: string) => {
+  characterNodes.value = characterNodes.value.filter(character => character.id !== id)
 }
 
 onMounted(loadCharacters)

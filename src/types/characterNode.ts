@@ -1,6 +1,7 @@
+import type { CharacterDetailsViewModel } from '@/types/character'
+
 export interface CharacterNode {
-    id: string
-    name: string
+    character: CharacterDetailsViewModel
     position: {
         x: number
         y: number
