@@ -7,14 +7,12 @@ export interface CharacterDetails extends Character {
   id: string
   name: string
   description: string
-  knows?: CharacterDetails[]
 }
 
 export interface CharacterDetailsViewModel extends CharacterDetails {
   id: string
   name: string
   description: string
-  knows?: CharacterDetails[]
   isModalOpen: boolean
 }
 

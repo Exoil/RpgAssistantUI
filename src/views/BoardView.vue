@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CharacterService } from '../services/CharacterService'
-import type { Character, CharacterDetailsViewModel } from '../types/character'
+import type { CharacterDetailsViewModel } from '../types/character'
 import CreateCharacterModal from '../components/characters/CreateCharacterModal.vue'
 import UpdateCharacterModal from '../components/characters/UpdateCharacterModal.vue'
 import CharacterHeader from '../components/characters/CharacterHeader.vue'
@@ -107,6 +107,6 @@ onMounted(loadCharacters)
 
 .board {
   flex: 1;
-  background: #1a1a1a;
+  background: #f5f5f5;
 }
 </style>
