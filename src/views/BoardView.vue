@@ -3,6 +3,7 @@ import { CharacterService } from '../services/CharacterService'
 import type { CharacterDetailsViewModel } from '@/types/character'
 import CreateCharacterModal from '../components/characters/CreateCharacterModal.vue'
 import UpdateCharacterModal from '../components/characters/UpdateCharacterModal.vue'
+import CharacterNodeModel from '../components/characters/CharacterNodeModel.vue'
 import CharacterHeader from '../components/characters/CharacterHeader.vue'
 import { ref, onMounted } from 'vue'
 const characters = ref<CharacterDetailsViewModel[]>([])
@@ -32,7 +33,7 @@ const loadCharacters = async () => {
       ...character,
       isModalOpen: false,
       isNodeView: false,
-      nodePosition: getRandomPosition(75),
+      nodePosition: {x: 80, y: 80},
       nodeFillColor: getRandomColor(),
       nodeStrokeColor: '#000000',
       nodeStrokeWidth: 1
@@ -70,6 +71,12 @@ onMounted(loadCharacters)
       </div>
     </div>
     <main class="board">
+      <svg class="board-svg" width="100%" height="100%">
+      <CharacterNodeModel 
+        v-for="character in characters"
+        :characterNode="character" 
+      />
+    </svg>
       <UpdateCharacterModal 
           v-for="character in characters" 
           :key="character.id"
@@ -93,6 +100,7 @@ onMounted(loadCharacters)
 .board-container {
   display: flex;
   height: 100vh;
+  width: 100vw;
 }
 
 .side-panel {
@@ -128,6 +136,6 @@ onMounted(loadCharacters)
 
 .board {
   flex: 1;
-  background: #f5f5f5;
+  background: gray;
 }
 </style>

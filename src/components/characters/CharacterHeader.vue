@@ -19,7 +19,6 @@ const handleClick = () => {
   props.character.isModalOpen = false;
 }
 const changeNodeViewState = () => {
-  console.log('Double click detected')
   if(!props.character.isNodeView){
     props.character.isNodeView = true;
     return;

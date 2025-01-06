@@ -4,7 +4,7 @@
     :id="props.characterNode.id"
     :cx="props.characterNode.nodePosition.x"
     :cy="props.characterNode.nodePosition.y"
-    :r="75"
+    :r="50"
     :fill="props.characterNode.nodeFillColor"
     :stroke="props.characterNode.nodeStrokeColor"
     :stroke-width="props.characterNode.nodeStrokeWidth"
