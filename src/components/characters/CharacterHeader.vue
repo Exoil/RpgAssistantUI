@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { computed } from 'vue'
 import type { CharacterDetailsViewModel } from '@/types/character'
 
 const props = defineProps<{
   character: CharacterDetailsViewModel
 }>()
+
+const checkboxValue = computed(() => {
+  return props.character.isNodeView ? 'Node View Enabled' : 'Node View Disabled'
+})
 
 const handleClick = () => {
   if(!props.character.isModalOpen) {
@@ -14,7 +18,7 @@ const handleClick = () => {
 
   props.character.isModalOpen = false;
 }
-const handleDoubleClick = () => {
+const changeNodeViewState = () => {
   console.log('Double click detected')
   if(!props.character.isNodeView){
     props.character.isNodeView = true;
@@ -23,11 +27,22 @@ const handleDoubleClick = () => {
 
   props.character.isNodeView = false;
 }
+
+
 </script>
 
 <template>
-  <div class="character-header" @click="handleClick">
-    {{ character.name }}
+  <div class="character-header">
+    <p @click="handleClick">{{ character.name }}</p>
+    <div>
+      <input 
+      type="checkbox"
+      id="check-box-{{ character.id }}"
+      name="check-box-{{ character.id }}"
+      :value="props.character.isNodeView"
+      @click="changeNodeViewState"/>
+      <p>{{ checkboxValue }}</p>
+    </div>
   </div>
 </template>
 
