@@ -11,8 +11,8 @@
 </template>
 
 <script setup lang="ts">
-import type { CharacterNode } from '../types/characterNode';
-import { ref, defineProps, defineEmits } from 'vue'
+import type { CharacterNode } from '@/types/characterNode';
+import { ref, defineEmits } from 'vue'
 
 const props = defineProps<{
   characterNode: CharacterNode

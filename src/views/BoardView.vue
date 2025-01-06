@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { CharacterService } from '../services/CharacterService'
-import type { CharacterDetailsViewModel } from '../types/character'
+import type { CharacterDetailsViewModel } from '@/types/character'
+import type { CharacterNode } from '@/types/CharacterNode'
 import CreateCharacterModal from '../components/characters/CreateCharacterModal.vue'
 import UpdateCharacterModal from '../components/characters/UpdateCharacterModal.vue'
 import CharacterHeader from '../components/characters/CharacterHeader.vue'
 import { ref, onMounted } from 'vue'
 const characters = ref<CharacterDetailsViewModel[]>([])
+const characterNodes = ref<CharacterNode[]>([])
 const characterService = new CharacterService()
 const isShowCreateCharacterModal = ref(false)
 

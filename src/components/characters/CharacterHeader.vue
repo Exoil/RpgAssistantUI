@@ -7,7 +7,15 @@ const props = defineProps<{
 }>()
 
 const handleClick = () => {
-  props.character.isModalOpen = true
+  if(!props.character.isModalOpen) {
+    props.character.isModalOpen = true
+    return;
+  }
+
+  props.character.isModalOpen = false;
+}
+const handleDoubleClick = () => {
+  console.log('Double click detected')
 }
 </script>
 
