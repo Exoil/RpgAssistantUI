@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { CharacterService } from '@/services/CharacterService'
 import { ref } from 'vue'
-import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps<{
   charactersService: CharacterService

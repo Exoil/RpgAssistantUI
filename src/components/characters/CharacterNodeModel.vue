@@ -1,31 +1,30 @@
 <template>
   <circle
     v-if="props.characterNode.isNodeView"
-    :id="props.characterNode.character.id"
-    :cx="props.characterNode.position.x"
-    :cy="props.characterNode.position.y"
+    :id="props.characterNode.id"
+    :cx="props.characterNode.nodePosition.x"
+    :cy="props.characterNode.nodePosition.y"
     :r="75"
-    :fill="props.characterNode.fillColor"
-    :stroke="props.characterNode.strokeColor"
-    :stroke-width="props.characterNode.strokeWidth"
+    :fill="props.characterNode.nodeFillColor"
+    :stroke="props.characterNode.nodeStrokeColor"
+    :stroke-width="props.characterNode.nodeStrokeWidth"
     @mousedown="startDrag"
   />
 </template>
 
 <script setup lang="ts">
-import type { CharacterNode } from '@/types/CharacterDetailsViewModel';
-import { ref, defineEmits } from 'vue'
+import type { CharacterDetailsViewModel } from '@/types/character';
 
 const props = defineProps<{
-  characterNode: CharacterNode
+  characterNode: CharacterDetailsViewModel
 }>()
 
 const emit = defineEmits<{
   'position-update': [id: string, x: number, y: number]
 }>()
 
-let lastX = props.characterNode.position.x
-let lastY = props.characterNode.position.y
+let lastX = props.characterNode.nodePosition.x
+let lastY = props.characterNode.nodePosition.y
 
 const startDrag = (event: MouseEvent) => {
   const startX = event.clientX
@@ -34,19 +33,19 @@ const startDrag = (event: MouseEvent) => {
   const onMouseMove = (moveEvent: MouseEvent) => {
     const dx = moveEvent.clientX - startX
     const dy = moveEvent.clientY - startY
-    props.characterNode.position.x = lastX + dx
-    props.characterNode.position.y = lastY + dy
+    props.characterNode.nodePosition.x = lastX + dx
+    props.characterNode.nodePosition.y = lastY + dy
     emit(
       'position-update',
-      props.characterNode.character.id,
-      props.characterNode.position.x,
-      props.characterNode.position.y
+      props.characterNode.id,
+      props.characterNode.nodePosition.x,
+      props.characterNode.nodePosition.y
     )
   }
 
   const onMouseUp = () => {
-    lastX = props.characterNode.position.x
-    lastY = props.characterNode.position.y
+    lastX = props.characterNode.nodePosition.x
+    lastY = props.characterNode.nodePosition.y
     window.removeEventListener('mousemove', onMouseMove)
     window.removeEventListener('mouseup', onMouseUp)
   }

@@ -1,15 +1,29 @@
 <script setup lang="ts">
 import { CharacterService } from '../services/CharacterService'
 import type { CharacterDetailsViewModel } from '@/types/character'
-import type { CharacterNode } from '@/types/CharacterNode'
 import CreateCharacterModal from '../components/characters/CreateCharacterModal.vue'
 import UpdateCharacterModal from '../components/characters/UpdateCharacterModal.vue'
 import CharacterHeader from '../components/characters/CharacterHeader.vue'
 import { ref, onMounted } from 'vue'
 const characters = ref<CharacterDetailsViewModel[]>([])
-const characterNodes = ref<CharacterNode[]>([])
 const characterService = new CharacterService()
 const isShowCreateCharacterModal = ref(false)
+
+
+const getRandomColor = () => {
+  const letters = '0123456789ABCDEF'
+  let color = '#'
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)]
+  }
+  return color
+}
+
+const getRandomPosition = (radius: number) => {
+  const x = Math.random() * (window.innerWidth - 2 * radius) + radius
+  const y = Math.random() * (window.innerHeight - 2 * radius) + radius
+  return { x, y }
+}
 
 const loadCharacters = async () => {
   try {
@@ -17,7 +31,11 @@ const loadCharacters = async () => {
     characters.value = characterDetails.map(character => ({
       ...character,
       isModalOpen: false,
-      isNodeView: false
+      isNodeView: false,
+      nodePosition: getRandomPosition(75),
+      nodeFillColor: getRandomColor(),
+      nodeStrokeColor: '#000000',
+      nodeStrokeWidth: 1
     }))
   } catch (error) {
     console.error('Failed to load characters:', error)
@@ -36,14 +54,6 @@ const removeCharacterFromList = (id: string) => {
   characters.value = characters.value.filter(character => character.id !== id)
 }
 
-const addCharacterToNodes = (character: CharacterNode) => {
-  characterNodes.value.push(character)
-}
-
-const removeCharacteFromoNodes = (id: string) => {
-  characterNodes.value = characterNodes.value.filter(character => character.id !== id)
-}
-
 onMounted(loadCharacters)
 </script>
 
@@ -57,7 +67,10 @@ onMounted(loadCharacters)
           :key="character.id" 
           :character="character" 
         />
-        <UpdateCharacterModal 
+      </div>
+    </div>
+    <main class="board">
+      <UpdateCharacterModal 
           v-for="character in characters" 
           :key="character.id"
           :character="character" 
@@ -65,9 +78,6 @@ onMounted(loadCharacters)
           :characters="characters"
           @delete="removeCharacterFromList"
         />
-      </div>
-    </div>
-    <main class="board">
       <CreateCharacterModal 
         :showModal="isShowCreateCharacterModal" 
         :charactersService="characterService" 

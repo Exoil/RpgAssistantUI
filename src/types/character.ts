@@ -15,6 +15,13 @@ export interface CharacterDetailsViewModel extends CharacterDetails {
   description: string
   isModalOpen: boolean
   isNodeView: boolean
+  nodePosition: {
+    x: number
+    y: number
+  }
+  nodeFillColor: string
+  nodeStrokeColor: string
+  nodeStrokeWidth: number
 }
 
 export interface ProblemDetails {
