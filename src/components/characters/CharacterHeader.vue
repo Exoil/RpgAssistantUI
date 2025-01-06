@@ -34,7 +34,7 @@ const changeNodeViewState = () => {
 <template>
   <div class="character-header">
     <p @click="handleClick">{{ character.name }}</p>
-    <div>
+    <div class="checkbox-container">
       <input 
       type="checkbox"
       id="check-box-{{ character.id }}"
@@ -48,6 +48,17 @@ const changeNodeViewState = () => {
 
 <style scoped>
 .character-header {
+  cursor: pointer;
+  padding: 0.5rem;
+  background: #34495e;
+  color: white;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+}
+.checkbox-container{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   cursor: pointer;
   padding: 0.5rem;
   background: #34495e;
