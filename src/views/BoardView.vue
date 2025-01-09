@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { CharacterService } from '../services/CharacterService'
+import { CharacterService } from '@/services/CharacterService'
 import type { CharacterDetailsViewModel } from '@/types/character'
-import CreateCharacterModal from '../components/characters/CreateCharacterModal.vue'
-import UpdateCharacterModal from '../components/characters/UpdateCharacterModal.vue'
-import CharacterNodeModel from '../components/characters/CharacterNodeModel.vue'
-import CharacterHeader from '../components/characters/CharacterHeader.vue'
+import CreateCharacterModal from '@/components/characters/CreateCharacterModal.vue'
+import UpdateCharacterModal from '@/components/characters/UpdateCharacterModal.vue'
+import BoardComponent from '@/components/boards/BoardComponent.vue'
+import CharacterHeader from '@/components/characters/CharacterHeader.vue'
 import { ref, onMounted } from 'vue'
 const characters = ref<CharacterDetailsViewModel[]>([])
 const characterService = new CharacterService()
@@ -20,14 +20,33 @@ const getRandomColor = () => {
   return color
 }
 
-const getRandomPosition = (radius: number) => {
-  const x = Math.random() * (window.innerWidth - 2 * radius) + radius
-  const y = Math.random() * (window.innerHeight - 2 * radius) + radius
-  return { x, y }
+const getRandomPosition = (radius: number, previousPosition: { x: number, y: number }) => {
+  const startX = 100;
+  const startY = 100;
+  const maxWidth = 1000;
+  const maxHeight = 1000;
+
+  let x = previousPosition.x;
+  let y = previousPosition.y + 2 * radius; // Move down by the diameter of the circle
+
+  // If the new y position exceeds the max height, reset y and move x to the right
+  if (y + radius > maxHeight) {
+    y = startY;
+    x += 2 * radius; // Move right by the diameter of the circle
+  }
+
+  // If the new x position exceeds the max width, reset to start position
+  if (x + radius > maxWidth) {
+    x = startX;
+    y = startY;
+  }
+
+  return { x, y };
 }
 
 const loadCharacters = async () => {
   try {
+    let nodeStartPosition = {x: 80, y: 80}
     const characterDetails = await characterService.getCharacters()
     characters.value = characterDetails.map(character => ({
       ...character,
@@ -71,12 +90,7 @@ onMounted(loadCharacters)
       </div>
     </div>
     <main class="board">
-      <svg class="board-svg" width="100%" height="100%">
-      <CharacterNodeModel 
-        v-for="character in characters"
-        :characterNode="character" 
-      />
-    </svg>
+      <BoardComponent :characters="characters" :width="1000" :height="1000"/>
       <UpdateCharacterModal 
           v-for="character in characters" 
           :key="character.id"

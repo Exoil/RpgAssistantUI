@@ -4,12 +4,19 @@
     :id="props.characterNode.id"
     :cx="props.characterNode.nodePosition.x"
     :cy="props.characterNode.nodePosition.y"
-    :r="50"
+    :r="75"
     :fill="props.characterNode.nodeFillColor"
     :stroke="props.characterNode.nodeStrokeColor"
     :stroke-width="props.characterNode.nodeStrokeWidth"
     @mousedown="startDrag"
   />
+  <text v-if="props.characterNode.isNodeView"
+    :x="props.characterNode.nodePosition.x"
+    :y="props.characterNode.nodePosition.y" 
+    :font-size="10"
+    text-anchor="middle" 
+    dominant-baseline="middle"
+    :fill=textColor>{{ props.characterNode.name }}</text>
 </template>
 
 <script setup lang="ts">
@@ -22,6 +29,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   'position-update': [id: string, x: number, y: number]
 }>()
+const textColor = 'black'
 
 let lastX = props.characterNode.nodePosition.x
 let lastY = props.characterNode.nodePosition.y
